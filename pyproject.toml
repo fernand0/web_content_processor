@@ -1,5 +1,5 @@
 [project]
-name = "web_content_processor_pkg"
+name = "web_content_processor"
 version = "0.1.0"
 description = "A web content processor package"
 authors = [
@@ -19,6 +19,7 @@ dependencies = [
     "socialModules",
     "pytest",
     "six",
+    "git+https://git@github.com/fernand0/socialModules@errbot",
 ]
 requires-python = ">=3.8"
 readme = "README.md"
@@ -30,7 +31,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["web_content_processor_pkg*"]
+include = ["web_content_processor*"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
