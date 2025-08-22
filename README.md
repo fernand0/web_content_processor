@@ -43,7 +43,7 @@ python web_content_processor/WebContentProcessor.py <URL> [PROCESSING_MODE] [--f
 *   **Process a URL and send as readable text to an email:**
 
     ```bash
-    python web_content_processor/WebContentProcessor.py https://www.example.com/article -rea --from-email your.email@example.com --to-email recipient.email@example.com
+    python web_content_processor/WebContentProcessor.py https://github.com/fernand0/web_content_processor -rea --from-email sender@example.com --to-email receiver@example.com
     ```
 
 *   **Process a URL as plain text (no email):**
