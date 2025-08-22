@@ -16,7 +16,7 @@ dependencies = [
     "requests",
     "readability-lxml",
     "six",
-    "socialModules @ git+https://git@github.com/fernand0/socialModules.git@errbot",
+    "socialmodules @ git+https://git@github.com/fernand0/socialModules.git@errbot",
 ]
 requires-python = ">=3.8"
 readme = "README.md"
