@@ -1,0 +1,12 @@
+oauth2
+pdfrw
+textract
+pypandoc
+beautifulsoup4
+html2text
+pytidylib
+requests
+readability-lxml
+
+pytest
+six
