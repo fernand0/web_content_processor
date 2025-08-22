@@ -7,6 +7,6 @@ html2text
 pytidylib
 requests
 readability-lxml
-
 pytest
 six
+git+https://git@github.com/fernand0/socialModules@errbot
