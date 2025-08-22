@@ -220,8 +220,8 @@ class SocialMediaPoster:
         read_data = self.prepare_text(title, url, myText, file_name)
 
         social_media_targets = {
-            # "slack": "http://fernand0-errbot.slack.com/",
-            # "pocket": "fernand0kobo",
+            "slack": "http://fernand0-errbot.slack.com/",
+            "pocket": "fernand0kobo",
             "smtp": "ftricas@unizar.es",
         }
 
