@@ -9,4 +9,4 @@ requests
 readability-lxml
 pytest
 six
-git+https://git@github.com/fernand0/socialModules
+git+https://git@github.com/fernand0/socialModules@errbot
