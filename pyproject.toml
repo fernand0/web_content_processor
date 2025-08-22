@@ -1,5 +1,5 @@
 [project]
-name = "web_content_processor_pkg"
+name = "web_content_processor"
 version = "0.1.0"
 description = "A web content processor package"
 authors = [
@@ -15,14 +15,14 @@ dependencies = [
     "pytidylib",
     "requests",
     "readability-lxml",
-    "argparse",
-    "socialModules",
-    "pytest",
     "six",
 ]
 requires-python = ">=3.8"
 readme = "README.md"
 license = { text = "MIT" }
+
+[project.optional-dependencies]
+test = ["pytest"]
 
 [build-system]
 requires = ["setuptools>=61.0"]
@@ -30,7 +30,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["web_content_processor_pkg*"]
+include = ["web_content_processor*"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
