@@ -15,15 +15,15 @@ dependencies = [
     "pytidylib",
     "requests",
     "readability-lxml",
-    "argparse",
-    "socialModules",
-    "pytest",
     "six",
-    "socialModules @ git+https://git@github.com/fernand0/socialModules.git@errbot",
+    "social-modules @ git+https://git@github.com/fernand0/socialModules.git@errbot",
 ]
 requires-python = ">=3.8"
 readme = "README.md"
 license = { text = "MIT" }
+
+[project.optional-dependencies]
+test = ["pytest"]
 
 [build-system]
 requires = ["setuptools>=61.0"]
