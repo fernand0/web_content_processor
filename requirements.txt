@@ -1,6 +1,5 @@
 oauth2
 pdfrw
-textract
 pypandoc
 beautifulsoup4
 html2text
