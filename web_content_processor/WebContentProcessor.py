@@ -221,7 +221,8 @@ class SocialMediaPoster:
 
         social_media_targets = {
             "slack": "http://fernand0-errbot.slack.com/",
-            "pocket": "fernand0kobo",
+            #"pocket": "fernand0kobo",
+            "instapaper": "fernand0kobo",
             "smtp": "ftricas@unizar.es",
         }
 
