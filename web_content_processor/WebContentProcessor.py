@@ -241,8 +241,10 @@ class SocialMediaPoster:
                     apiSrc.setChannel("links")  # FIXME
 
                 if "smtp" in target:
+                    logging.info(f"Yessss")
                     apiSrc.fromaddr = self.from_email if self.from_email else "ftricas@elmundoesimperfecto.com"
-                    apiSrc.to = self.to_email if self.to_email else social_media_targets[target]
+                    apiSrc.destaddr = social_media_targets[target]
+                logging.info(f"Yessss: {apiSrc.destaddr}")
                 msgLog = apiSrc.publishPost(title, url, read_data)
                 logging.info(msgLog)
             except Exception as e:
