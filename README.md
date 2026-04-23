@@ -22,10 +22,10 @@ To set up the project, follow these steps:
 
 ## Usage
 
-To run the web content processor, use the `WebContentProcessor.py` script with the desired URL and processing mode. You can also specify sender and recipient email addresses for notifications.
+To run the web content processor, use the `WebContentProcessor.py` script with the desired URL and processing mode. You can also specify sender and recipient email addresses for notifications and a configuration file for social media targets.
 
 ```bash
-python web_content_processor/WebContentProcessor.py <URL> [PROCESSING_MODE] [--from-email YOUR_EMAIL] [--to-email RECIPIENT_EMAIL]
+python web_content_processor/WebContentProcessor.py <URL> [PROCESSING_MODE] [--from-email YOUR_EMAIL] [--to-email RECIPIENT_EMAIL] [--config CONFIG_FILE]
 ```
 
 **Arguments:**
@@ -37,6 +37,7 @@ python web_content_processor/WebContentProcessor.py <URL> [PROCESSING_MODE] [--f
     *   `-reau`: Process as readable text and mail (unconditional).
 *   `--from-email YOUR_EMAIL`: Optional. The email address to use as the sender for notifications.
 *   `--to-email RECIPIENT_EMAIL`: Optional. The email address to send notifications to.
+*   `--config CONFIG_FILE`: Optional. Path to a JSON configuration file (default: `config.json`).
 
 **Examples:**
 
@@ -46,11 +47,27 @@ python web_content_processor/WebContentProcessor.py <URL> [PROCESSING_MODE] [--f
     python web_content_processor/WebContentProcessor.py https://github.com/fernand0/web_content_processor -rea --from-email sender@example.com --to-email receiver@example.com
     ```
 
-*   **Process a URL as plain text (no email):**
+*   **Process a URL using a custom configuration file:**
 
     ```bash
-    python web_content_processor/WebContentProcessor.py https://www.example.com/another-article -txt
+    python web_content_processor/WebContentProcessor.py https://www.example.com/article -rea --config my_config.json
     ```
+
+## Configuration
+
+Social media targets and other settings can be configured in a JSON file. By default, the script looks for `config.json` in the current directory.
+
+**Example `config.json`:**
+
+```json
+{
+    "social_media_targets": {
+        "slack": "http://fernand0-errbot.slack.com/",
+        "instapaper": "fernand0kobo",
+        "smtp": "ftricas@unizar.es"
+    }
+}
+```
 
 ## Features
 
