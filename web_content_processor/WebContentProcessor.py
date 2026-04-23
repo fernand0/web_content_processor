@@ -21,14 +21,6 @@ import socialModules.moduleHtml
 import socialModules.moduleSlack
 import socialModules.moduleRules
 
-class Alarm(Exception):
-    pass
-
-
-def alarm_handler(signum, frame):
-    raise Alarm
-
-
 def _parse_arguments():
     parser = argparse.ArgumentParser(description="Process a URL and send it to Kindle.")
     parser.add_argument("url", help="The URL to process.")
