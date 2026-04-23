@@ -1,0 +1,7 @@
+{
+    "social_media_targets": {
+        "slack": "http://fernand0-errbot.slack.com/",
+        "instapaper": "fernand0kobo",
+        "smtp": "ftricas@unizar.es"
+    }
+}

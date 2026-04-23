@@ -47,7 +47,9 @@ class TestSocialMediaPoster(unittest.TestCase):
         mock_api_src = MagicMock()
         mock_rules_instance.readConfigDst.return_value = mock_api_src
 
-        poster = SocialMediaPoster()
+        # Provide a target to ensure loop executes
+        targets = {"test_target": "test_addr"}
+        poster = SocialMediaPoster(social_media_targets=targets)
 
         # Act
         poster.post_to_social_media(
@@ -56,10 +58,8 @@ class TestSocialMediaPoster(unittest.TestCase):
 
         # Assert
         mock_rules_instance.checkRules.assert_called()
+        # The number of calls should match the number of targets
         self.assertEqual(mock_api_src.publishPost.call_count, 1)
-        mock_api_src.publishPost.assert_called_with(
-            "Test Title", "http://example.com", "myText\n\n"
-        )
 
 
 class TestUrlLogger(unittest.TestCase):

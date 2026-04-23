@@ -7,16 +7,13 @@ import re
 import logging
 import urllib.parse
 import html2text
+import json
 
 # pip install pytidylib
 import requests
 
 # pip install readability-lxml
 import argparse
-
-
-
-
 
 import socialModules
 from socialModules.configMod import *
@@ -55,6 +52,9 @@ def _parse_arguments():
     )  # Renamed to referrer
     parser.add_argument("--from-email", help="Email address for sender.")
     parser.add_argument("--to-email", help="Email address for recipient.")
+    parser.add_argument(
+        "--config", default="config.json", help="Path to config file."
+    )
 
     args = parser.parse_args()
 
@@ -73,6 +73,7 @@ def _parse_arguments():
         args.referer,
         args.from_email,
         args.to_email,
+        args.config,
     )  # args.referer remains as the parsed argument name
 
 
@@ -194,9 +195,10 @@ class ContentFetcher:
 
 
 class SocialMediaPoster:
-    def __init__(self, from_email=None, to_email=None):
+    def __init__(self, from_email=None, to_email=None, social_media_targets=None):
         self.from_email = from_email
         self.to_email = to_email
+        self.social_media_targets = social_media_targets if social_media_targets else {}
 
     def prepare_text(self, title, url, text_content, file_name):
         text_maker = html2text.HTML2Text()
@@ -219,30 +221,27 @@ class SocialMediaPoster:
 
         read_data = self.prepare_text(title, url, myText, file_name)
 
-        social_media_targets = {
-            "slack": "http://fernand0-errbot.slack.com/",
-            #"pocket": "fernand0kobo",
-            "instapaper": "fernand0kobo",
-            "smtp": "ftricas@unizar.es",
-        }
-
         rules = socialModules.moduleRules.moduleRules()
         rules.checkRules()
-        for target in social_media_targets:
+        for target in self.social_media_targets:
             try:
                 logging.info(f"Posting to {target}")
                 # key = next(x for x in rules.rules.keys())
                 # logging.info(f"Key {key}")
                 # apiSrc = rules.readConfigSrc("", key, rules.more[key])
-                key = ("direct", "post", target, social_media_targets[target])
+                key = ("direct", "post", target, self.social_media_targets[target])
                 apiSrc = rules.readConfigDst("", key, None, None)
                 logging.info(f"Api: {apiSrc}")
                 if hasattr(apiSrc, "setChannel"):
                     apiSrc.setChannel("links")  # FIXME
 
                 if "smtp" in target:
-                    apiSrc.fromaddr = self.from_email if self.from_email else "ftricas@elmundoesimperfecto.com"
-                    apiSrc.destaddr = social_media_targets[target]
+                    apiSrc.fromaddr = (
+                        self.from_email
+                        if self.from_email
+                        else "ftricas@elmundoesimperfecto.com"
+                    )
+                    apiSrc.destaddr = self.social_media_targets[target]
                 msgLog = apiSrc.publishPost(title, url, read_data)
                 logging.info(msgLog)
             except Exception as e:
@@ -282,11 +281,31 @@ class WebContentProcessor:
 
         return file_name, file_name_os
 
-    def __init__(self, log_file="/tmp/traer.log", from_email=None, to_email=None):
+    def __init__(
+        self,
+        log_file="/tmp/traer.log",
+        from_email=None,
+        to_email=None,
+        config_path="config.json",
+    ):
         self._setup_logging(log_file)
         self.html_processor = socialModules.moduleHtml.moduleHtml()  # Initialize once
         self.from_email = from_email
         self.to_email = to_email
+        self.config_path = config_path
+        self.social_media_targets = self._load_config(config_path)
+
+    def _load_config(self, config_path):
+        try:
+            with open(config_path, "r") as f:
+                config = json.load(f)
+                return config.get("social_media_targets", {})
+        except FileNotFoundError:
+            logging.warning(f"Config file not found: {config_path}. Using empty targets.")
+            return {}
+        except json.JSONDecodeError:
+            logging.error(f"Error decoding JSON from {config_path}. Using empty targets.")
+            return {}
 
     def _setup_logging(self, log_file):
         logging.basicConfig(
@@ -313,15 +332,19 @@ class WebContentProcessor:
             logging.error(
                 f"Critical error during download or cleaning: {download_status}. Exiting."
             )
-            social_media_poster = SocialMediaPoster(self.from_email, self.to_email)
-            error_title = cleaned_url # Changed to cleaned_url
+            social_media_poster = SocialMediaPoster(
+                self.from_email, self.to_email, self.social_media_targets
+            )
+            error_title = cleaned_url  # Changed to cleaned_url
             error_body = f"Downloading not possible for URL: {cleaned_url}\nError: {download_status}"
             social_media_poster.post_to_social_media(
                 error_title, cleaned_url, "smtp", error_body, ""
             )
             return 1
 
-        social_media_poster = SocialMediaPoster(self.from_email, self.to_email)
+        social_media_poster = SocialMediaPoster(
+            self.from_email, self.to_email, self.social_media_targets
+        )
         mail_result = None
         # if processing_mode == 'rea' or processing_mode == 'reau':
         #     mail_result = social_media_poster.send_email_notification(title, cleaned_url, myText, file_name)
@@ -340,8 +363,10 @@ class WebContentProcessor:
 
 
 def main():
-    url, processing_mode, referrer, from_email, to_email = _parse_arguments()
-    processor = WebContentProcessor(from_email=from_email, to_email=to_email)
+    url, processing_mode, referrer, from_email, to_email, config_path = _parse_arguments()
+    processor = WebContentProcessor(
+        from_email=from_email, to_email=to_email, config_path=config_path
+    )
     processor.process_url(url, processing_mode, referrer)
 
 
