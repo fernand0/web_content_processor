@@ -62,9 +62,9 @@ Social media targets and other settings can be configured in a JSON file. By def
 ```json
 {
     "social_media_targets": {
-        "slack": "http://fernand0-errbot.slack.com/",
-        "instapaper": "fernand0kobo",
-        "smtp": "ftricas@unizar.es"
+        "slack": "https://your-workspace.slack.com/services/hooks/...",
+        "instapaper": "your_username",
+        "smtp": "your_email@example.com"
     }
 }
 ```
