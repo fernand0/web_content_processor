@@ -21,12 +21,6 @@ import socialModules.moduleHtml
 import socialModules.moduleSlack
 import socialModules.moduleRules
 
-API_URL_PREFIX = "https://www.instapaper.com/api/1"
-ADD_BOOKMARK = "/bookmarks/add"
-ARCHIVE_BOOKMARK = "/bookmarks/archive"
-GET_TEXT_BOOKMARK = "/bookmarks/get_text"
-
-
 class Alarm(Exception):
     pass
 
